@@ -1,4 +1,4 @@
-package net.countercraft.movecraft.repair.util;
+package net.countercraft.movecraft.repair.upgrader.util;
 
 import java.io.File;
 import java.io.FileInputStream;
