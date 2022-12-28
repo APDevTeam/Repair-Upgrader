@@ -1,0 +1,8 @@
+name: Repair-Upgrader
+depend: [WorldEdit]
+version: ${project.version}
+api-version: 1.14
+description: Repair state upgrader
+authors: [TylerS1066]
+website: https://github.com/APDevTeam/Repair-Upgrader
+main: net.countercraft.movecraft.repair.RepairUpgrader
