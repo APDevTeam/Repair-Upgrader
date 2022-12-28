@@ -32,6 +32,9 @@ public class UUIDTask implements Task {
 
             String baseName = name.substring(0, index);
             File newFile = new File(folder, baseName + "." + WEUtils.MODERN_FORMAT.getPrimaryFileExtension());
+            if (newFile.exists())
+                continue;
+
             result.add(new FileTask(plugin, file, newFile));
         }
         states = new LinkedList<>(result);
