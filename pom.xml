@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.countercraft.movecraft.repair</groupId>
+    <artifactId>RepairUpgrader</artifactId>
+    <version>0.1.0</version>
+    <packaging>jar</packaging>
+
+    <name>Repair-Upgrader</name>
+
+    <properties>
+        <java.version>13</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <url>https://github.com/APDevTeam/Repair-Upgrader</url>
+
+    <build>
+        <finalName>Repair-Upgrader</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <forceCreation>true</forceCreation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>13</source>
+                    <target>13</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <artifactSet>
+                                <includes>
+                                    <include>net.countercraft.movecraft.repair:Repair-Upgrader*</include>
+                                </includes>
+                            </artifactSet>
+                            <minimizeJar>true</minimizeJar>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <artifactSet>
+                                <includes>
+                                    <include>net.countercraft.movecraft.repair*</include>
+                                </includes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <targetPath>.</targetPath>
+                <directory>.</directory>
+                <includes>
+                    <include>LICENSE.md</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>spigotmc-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>enginehub-repo</id>
+            <url>https://maven.enginehub.org/repo/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!--Spigot API-->
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.14.4-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--Annotations-->
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations-java5</artifactId>
+            <version>23.1.0</version>
+        </dependency>
+        <!--WorldEdit Core-->
+        <dependency>
+            <groupId>com.sk89q.worldedit</groupId>
+            <artifactId>worldedit-core</artifactId>
+            <version>7.2.9</version>
+        </dependency>
+        <!--WorldEdit Bukkit-->
+        <dependency>
+            <groupId>com.sk89q.worldedit</groupId>
+            <artifactId>worldedit-bukkit</artifactId>
+            <version>7.2.9</version>
+        </dependency>
+    </dependencies>
+</project>
