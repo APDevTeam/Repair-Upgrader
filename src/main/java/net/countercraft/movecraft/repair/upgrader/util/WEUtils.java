@@ -18,24 +18,13 @@ public class WEUtils {
 
     @Nullable
     public static Clipboard loadSchematic(File file) throws IOException {
-        Clipboard clipboard;
-        try {
-            ClipboardReader reader = LEGACY_FORMAT.getReader(new FileInputStream(file));
-            clipboard = reader.read();
-        } catch (IOException e) {
-            throw new IOException("Failed to load schematic", e);
-        }
-        return clipboard;
+        ClipboardReader reader = LEGACY_FORMAT.getReader(new FileInputStream(file));
+        return reader.read();
     }
 
     public static void saveSchematic(File file, Clipboard clipboard) throws IOException {
-        try {
-            ClipboardWriter writer = MODERN_FORMAT.getWriter(new FileOutputStream(file));
-            writer.write(clipboard);
-            writer.close();
-        }
-        catch (IOException e) {
-            throw new IOException("Failed to save schematic", e);
-        }
+        ClipboardWriter writer = MODERN_FORMAT.getWriter(new FileOutputStream(file));
+        writer.write(clipboard);
+        writer.close();
     }
 }
