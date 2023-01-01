@@ -32,6 +32,8 @@ public class FileTask implements Task {
             return;
         }
 
+        clipboard = WEUtils.convertClipboard(clipboard);
+
         try {
             WEUtils.saveSchematic(newState, clipboard);
         } catch (IOException e) {
