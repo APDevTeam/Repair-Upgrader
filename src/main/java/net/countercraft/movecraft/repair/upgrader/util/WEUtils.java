@@ -54,7 +54,6 @@ public class WEUtils {
         for (BlockVector3 location : input.getRegion()) {
             BaseBlock inputBlock = input.getFullBlock(location);
 
-            RepairUpgrader.getInstance().getLogger().info(() -> "Checking " + location);
             CompoundTag nbt = upgradeBlockContents(inputBlock);
             BaseBlock outputBlock;
             if (nbt != null) {
@@ -78,10 +77,8 @@ public class WEUtils {
     @Nullable
     private static CompoundTag upgradeBlockContents(BaseBlock block) {
         CompoundTag inputNBT = block.getNbtData();
-        if (inputNBT == null) {
-            RepairUpgrader.getInstance().getLogger().info("Null NBT");
+        if (inputNBT == null)
             return null;
-        }
 
         Map<String, Tag> result = new HashMap<>();
         boolean foundItems = false;
@@ -93,7 +90,6 @@ public class WEUtils {
 
             Tag items = entry.getValue();
             if (!(items instanceof ListTag)) {
-                RepairUpgrader.getInstance().getLogger().info("Invalid Items");
                 result.put(entry.getKey(), entry.getValue());
                 continue;
             }
@@ -101,10 +97,8 @@ public class WEUtils {
             foundItems = true;
             result.put(entry.getKey(), updateItems((ListTag) items));
         }
-        if (!foundItems) {
-            RepairUpgrader.getInstance().getLogger().info("No Items");
+        if (!foundItems)
             return null;
-        }
 
         return new CompoundTag(result);
     }
@@ -114,7 +108,6 @@ public class WEUtils {
         List<Tag> result = new ArrayList<>();
         for (Tag item : items.getValue()) {
             if (!(item instanceof CompoundTag)) {
-                RepairUpgrader.getInstance().getLogger().info(() -> "Skipping " + item);
                 result.add(item);
                 continue;
             }
@@ -135,14 +128,12 @@ public class WEUtils {
 
             short shortID = item.getShort("id");
             BlockState blockStateID = LegacyMapper.getInstance().getBlockFromLegacy(shortID);
-            if (blockStateID == null) {
-                RepairUpgrader.getInstance().getLogger().severe(() -> "Failed to convert " + shortID);
+            if (blockStateID == null)
                 continue;
-            }
+
             BlockType blockType = blockStateID.getBlockType();
             String resultID = blockType.getId();
             result.put("id", new StringTag(resultID));
-            RepairUpgrader.getInstance().getLogger().info(() -> "Converted " + shortID + " to " + resultID + " (via " + blockStateID + " & " + blockType + ")");
         }
         return new CompoundTag(result);
     }
