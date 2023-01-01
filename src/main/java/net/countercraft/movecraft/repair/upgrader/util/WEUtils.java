@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,6 +50,7 @@ public class WEUtils {
     @NotNull
     public static Clipboard convertClipboard(Clipboard input) {
         Clipboard output = new BlockArrayClipboard(input.getRegion());
+        output.setOrigin(input.getOrigin());
         for (BlockVector3 location : input.getRegion()) {
             BaseBlock inputBlock = input.getFullBlock(location);
 
@@ -58,7 +58,7 @@ public class WEUtils {
             CompoundTag nbt = upgradeBlockContents(inputBlock);
             BaseBlock outputBlock;
             if (nbt != null) {
-                outputBlock = inputBlock.toImmutableState().toBaseBlock(nbt);
+                outputBlock = inputBlock.toBaseBlock(nbt);
             }
             else {
                 outputBlock = inputBlock;
@@ -80,10 +80,11 @@ public class WEUtils {
         CompoundTag inputNBT = block.getNbtData();
         if (inputNBT == null) {
             RepairUpgrader.getInstance().getLogger().info("Null NBT");
-            return inputNBT;
+            return null;
         }
 
         Map<String, Tag> result = new HashMap<>();
+        boolean foundItems = false;
         for (Map.Entry<String, Tag> entry : inputNBT.getValue().entrySet()) {
             if (!entry.getKey().equals("Items")) {
                 result.put(entry.getKey(), entry.getValue());
@@ -97,12 +98,18 @@ public class WEUtils {
                 continue;
             }
 
+            foundItems = true;
             result.put(entry.getKey(), updateItems((ListTag) items));
         }
+        if (!foundItems) {
+            RepairUpgrader.getInstance().getLogger().info("No Items");
+            return null;
+        }
+
         return new CompoundTag(result);
     }
 
-    @Nullable
+    @NotNull
     private static ListTag updateItems(ListTag items) {
         List<Tag> result = new ArrayList<>();
         for (Tag item : items.getValue()) {
@@ -117,7 +124,7 @@ public class WEUtils {
         return new ListTag(CompoundTag.class, result);
     }
 
-    @Nullable
+    @NotNull
     private static CompoundTag updateItem(CompoundTag item) {
         Map<String, Tag> result = new HashMap<>();
         for (Map.Entry<String, Tag> entry : item.getValue().entrySet()) {
